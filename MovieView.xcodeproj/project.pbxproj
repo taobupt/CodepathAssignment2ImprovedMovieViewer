@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2B5085601E1F1B1F00FACE66 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B50855F1E1F1B1F00FACE66 /* ViewController.swift */; };
 		2B5085641E1F1D1F00FACE66 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5085631E1F1D1F00FACE66 /* CollectionCell.swift */; };
+		2B6596141E293FB60088B75D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6596131E293FB60088B75D /* DetailViewController.swift */; };
 		2BE84F211E19924E002C5DD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE84F201E19924E002C5DD3 /* AppDelegate.swift */; };
 		2BE84F261E19924E002C5DD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BE84F241E19924E002C5DD3 /* Main.storyboard */; };
 		2BE84F281E19924E002C5DD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BE84F271E19924E002C5DD3 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		2B50855F1E1F1B1F00FACE66 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2B5085631E1F1D1F00FACE66 /* CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
+		2B6596131E293FB60088B75D /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		2BE84F1D1E19924E002C5DD3 /* MovieView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE84F201E19924E002C5DD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2BE84F251E19924E002C5DD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			children = (
 				2BE84F321E1992A9002C5DD3 /* MoviesViewController.swift */,
 				2B50855F1E1F1B1F00FACE66 /* ViewController.swift */,
+				2B6596131E293FB60088B75D /* DetailViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 				2BE84F211E19924E002C5DD3 /* AppDelegate.swift in Sources */,
 				2BE84F341E1992A9002C5DD3 /* MoviesViewController.swift in Sources */,
 				2B5085601E1F1B1F00FACE66 /* ViewController.swift in Sources */,
+				2B6596141E293FB60088B75D /* DetailViewController.swift in Sources */,
 				2BE84F381E19A226002C5DD3 /* MovieCell.swift in Sources */,
 				2B5085641E1F1D1F00FACE66 /* CollectionCell.swift in Sources */,
 			);

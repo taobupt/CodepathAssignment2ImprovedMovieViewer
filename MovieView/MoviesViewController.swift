@@ -14,18 +14,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource,UITableViewD
 
     @IBOutlet weak var tableView: UITableView!
     var movies: [NSDictionary]?
+    var endpoint: String="now_playing"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+        
         tableView.dataSource=self
         tableView.delegate=self
-        self.title="Moive Viewer"
+        self.navigationItem.title="Movie Viewer"
         let refreshControl=UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(MoviesViewController.refreshControlAction(refreshControl:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = URLRequest(url: url!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         MBProgressHUD.showAdded(to: self.view, animated:true)
@@ -49,7 +53,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource,UITableViewD
     
     func refreshControlAction(refreshControl: UIRefreshControl){
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         let request = URLRequest(url: url!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
@@ -87,52 +91,76 @@ class MoviesViewController: UIViewController, UITableViewDataSource,UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell=tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
+        let backgroundView=UIView()
+        backgroundView.backgroundColor=UIColor.red
+        cell.selectedBackgroundView=backgroundView
+        cell.selectionStyle=UITableViewCellSelectionStyle.none
         let movie=movies![indexPath.row]
         let title=movie["title"] as! String
         
         let overview=movie["overview"] as! String
-        let posterPath=movie["poster_path"] as! String
         cell.overviewLabel.text=overview
         cell.titleLabel.text=title
-        let Url="https://image.tmdb.org/t/p/w500"+posterPath
-        let imageUrl=URL(string: Url)
-        let imageRequest=URLRequest(url: imageUrl!)
+        
+        if let posterPath=movie["poster_path"] as? String{
+            
+        let smallImageUrl=URL(string:"https://image.tmdb.org/t/p/w45"+posterPath)
+        let largeImageUrl=URL(string:"https://image.tmdb.org/t/p/original"+posterPath)
+        let smallImageRequest=URLRequest(url: smallImageUrl!)
+        let largeImageRequest=URLRequest(url: largeImageUrl!)
         cell.posterView.setImageWith(
-            imageRequest,
+            smallImageRequest,
             placeholderImage: nil,
-            success: { (imageRequest, imageResponse, image) -> Void in
+            success: { (smallImageRequest, smallImageResponse, smallImage) -> Void in
                 
                 // imageResponse will be nil if the image is cached
-                if imageResponse != nil {
+                if smallImageResponse != nil {
                     print("Image was NOT cached, fade in image")
                     cell.posterView.alpha = 0.0
-                    cell.posterView.image = image
+                    cell.posterView.image = smallImage
                     UIView.animate(withDuration: 0.3, animations: { () -> Void in
                         cell.posterView.alpha = 1.0
+                    },completion: {(sucess)-> Void in
+                        cell.posterView.setImageWith(
+                            largeImageRequest,
+                            placeholderImage: smallImage, success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
+                                cell.posterView.image = largeImage;
+                                
+                        }, failure: { (request, response, error) -> Void in
+                            // do something for the failure condition of the large image request
+                            // possibly setting the ImageView's image to a default image
+                        })
                     })
                 } else {
                     print("Image was cached so just update the image")
-                    cell.posterView.image = image
+                    cell.posterView.image = smallImage
                 }
         },
             failure: { (imageRequest, imageResponse, error) -> Void in
                 // do something for the failure condition
         })
         //cell.posterView.setImageWith(imageUrl!)
-        print("row \(indexPath.row)")
+        }
         return cell
         
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let cell=sender as! UITableViewCell
+        let indexPath=tableView.indexPath(for: cell)
+        let movie=movies?[(indexPath?.row)!]
+        let detailViewcontroller=segue.destination as! DetailViewController
+        detailViewcontroller.movie=movie
+        
     }
-    */
+ 
+    
 
 }
